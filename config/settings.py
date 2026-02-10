@@ -68,7 +68,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'snapdeal_clone.urls'
 
 TEMPLATES = [
     {
@@ -88,8 +87,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'snapdeal_clone.wsgi.application'
-
+ROOT_URLCONF = 'config.urls'
+WSGI_APPLICATION = 'config.wsgi.application'
 ALLOWED_HOSTS = ["*"]
 
 

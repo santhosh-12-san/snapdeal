@@ -1,13 +1,10 @@
 FROM python:3.11-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
 WORKDIR /app
-
-COPY requirements.txt .
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+RUN apt-get update && apt-get install -y gcc pkg-config default-libmysqlclient-dev build-essential
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-CMD ["gunicorn", "snapdeal_clone.wsgi:application", "--bind", "0.0.0.0:8000"]
+RUN pip install gunicorn
+COPY . /app/
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]

@@ -1,26 +1,41 @@
+version: '3.8'
+
 services:
   web:
     build: .
-    command: gunicorn snapdeal_clone.wsgi:application --bind 0.0.0.0:8000
+    # This command lists files before starting so we can debug
+    command: >
+      sh -c "echo '--- CHECKING FILES ---' && ls -R /app &&
+             python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
-      - media_volume:/app/media
     ports:
       - "8000:8000"
-    environment:
-      - DJANGO_SETTINGS_MODULE=snapdeal_clone.settings
     depends_on:
       - db
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-test-key
+      - DB_ENGINE=django.db.backends.mysql
+      - DB_NAME=snapdeal_db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_HOST=db
+      - DB_PORT=3306
 
   db:
-    image: postgres:15
+    image: mysql:8.0
+    restart: always
     environment:
-      POSTGRES_DB: snapdeal_db
-      POSTGRES_USER: snapdeal_user
-      POSTGRES_PASSWORD: snapdeal_pass
+      MYSQL_DATABASE: snapdeal_db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
 
 volumes:
-  postgres_data:
-  media_volume:
+  mysql_data:
