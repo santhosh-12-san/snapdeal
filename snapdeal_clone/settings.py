@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'apps.payments',
     'rest_framework',
     'rest_framework_simplejwt',
-   
     'rest_framework.authtoken',
 ]
 
