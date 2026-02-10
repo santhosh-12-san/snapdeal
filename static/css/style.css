@@ -1,0 +1,626 @@
+/* --- RESET & VARIABLES --- */
+:root {
+    --snap-pink-light: #fdf1f2;
+    --snap-red: #e40046;
+    --snap-dark-gray: #333;
+    --snap-light-gray: #555;
+    --snap-border: #e9e9e9;
+}
+
+body {
+    background-color: #f7f7f7;
+    font-family: 'Roboto', sans-serif;
+    margin:  0 10px ;
+    padding: 0 5px ;
+}
+
+a { text-decoration: none; color: inherit; }
+
+
+
+
+/* --- STICKY HEADER FIX --- */
+.sd-sticky-header {
+    position: sticky;       /* Enables sticky behavior */
+    top: 0;                 /* Sticks exactly to the top of the browser */
+    z-index: 1000;          /* Ensures it sits ABOVE the banners and content */
+    background-color: white; /* Important: Prevents content from showing behind transparent areas */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Adds a subtle shadow when scrolling */
+}
+
+/* Ensure the header and category bar don't conflict */
+.sd-header-main {
+    position: relative; /* Remove old sticky if present */
+    z-index: 1001;
+}
+
+.sd-category-bar {
+    position: relative;
+    z-index: 1001; /* Ensure this is also high */
+}
+
+/* Custom Container */
+/* .sd-container {
+    max-width: 1400px;
+    margin: 0 25px auto;
+    padding: 0 15px;
+} */
+.sd-container {
+    max-width: 1400px;       /* Keeps the content width fixed */
+    width: 100%;             /* Ensures it takes space on smaller screens */
+    margin: 0 auto;                   /* margin-left:0 auto;       /* Pushes from the left */                     /* margin-right:0 auto;      /* Pushes from the right = CENTERING */
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+
+/* --- 1. TOP BAR --- */
+.sd-top-bar {
+    padding: 20px; 
+    background-color: var(--snap-pink-light);
+    height: 50px;
+    font-size: 15px;
+    color: var(--snap-light-gray);
+    border-bottom: 1px solid #fae6e8;
+}
+.sd-logo {
+    display: flex;
+    align-items: center;
+
+}
+.sd-logo-text {
+    font-size: 30px;
+    /* margin-left: 2px; */  
+}
+.top-link {
+    color: #666;
+    margin-left: 20px;
+}
+.top-link:hover { text-decoration: underline; }
+
+/* --- 2. HEADER --- */
+.sd-header-main {
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+    z-index: 100;
+}
+
+/* --- MAPPING SC- CLASSES TO CSS --- */
+
+/* The main container for Search + Actions */
+.sc-49edc83e-3.gzXMQG {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end; /* Pushes content to the right of logo */
+    align-items: center;
+}
+
+/* The Search Wrapper */
+.sc-49edc83e-6.dAtOvn {
+    position: relative;
+    flex-grow: 1;
+    margin: 0 40px; /* Spacing around search */
+    max-width: 700px;
+}
+
+/* The Search Input Box */
+.sc-49edc83e-7.dDzjlt {
+    background-color: #f4f4f4;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #1d0404;
+}
+
+/* The Icon & Placeholder Text Wrapper */
+.sc-49edc83e-8.elesjj {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    color: #666;
+    pointer-events: none; /* Let clicks pass to input */
+    z-index: 1;
+}
+
+.sc-49edc83e-8.elesjj svg {
+    margin-right: 8px;
+    width: 14px;
+    height: 14px;
+}
+
+.sc-49edc83e-9.cdpKnw {
+    font-size: 12px;
+    color: #999;
+}
+
+.brand-and-products {
+    color: #666; /* Slightly darker */
+}
+
+/* The Actual Input */
+.search-box-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding-left: 120px; /* Push text past the icon/placeholder */
+    outline: none;
+    font-size: 13px;
+    color: #333;
+}
+
+/* Actions (Login / Cart) */
+.sc-49edc83e-4.hZtcpr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 25px;
+    text-align: center;
+    color: #555;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.sc-49edc83e-4.hZtcpr svg {
+    margin-bottom: 2px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Download App Button */
+.sc-49edc83e-10.kOJxDN {
+    background-color: #e40046;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 13px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.sc-49edc83e-10.kOJxDN:hover {
+    background-color: #c7003d;
+}
+
+.sc-49edc83e-11.bEfrXA {
+    display: inline-block;
+}
+/* --- 4. CATEGORY BAR (The Container) --- */
+.sd-category-bar {
+    background: white;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative; /* The Mega Menu will stick to THIS, not the scroll items */
+    z-index: 900;
+    height: 85px;
+}
+
+/* --- HORIZONTAL SCROLL (Hidden Scrollbar) --- */
+.cat-scroll-view {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    
+    /* Enable Scroll */
+    overflow-x: auto;
+    
+    /* Hide Scrollbar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.cat-scroll-view::-webkit-scrollbar {
+    display: none;
+}
+
+/* --- NAV ITEMS (The Trick) --- */
+.sd-nav-item {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto; /* Don't shrink */
+    padding: 0 15px;
+    
+    /* CRITICAL FIX: 'static' allows the dropdown to escape this container */
+    position: static; 
+}
+
+.sd-cat-item {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 2px solid transparent;
+}
+
+.sd-cat-item:hover {
+    color: #e40046;
+    border-bottom: 2px solid #e40046;
+}
+
+.sd-cat-thumb {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #eee;
+}
+
+/* --- 5. MEGA MENU (Full Width Fix) --- */
+.sd-mega-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    left: 0;
+    top: 85px; /* Pushes it exactly below the gray bar */
+    max-width: 500px; /* Spans the full width of the screen */
+  
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-top: 1px solid #e0e0e0;
+    z-index: 999;
+    padding: 20px 0;
+}
+
+/* Show Menu on Hover */
+.sd-nav-item:hover .sd-mega-menu {
+    display: block;
+}
+
+/* /* Internal Layout of Mega Menu  */
+.mega-content {
+    max-width: 1400px; /* Matches your main container width */
+    margin: 0 auto;
+    max-height: 500px;
+    padding: 0 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+} 
+
+.mega-column {
+    width: 150px; /* Fixed width for columns */
+}
+
+.hover-red:hover {
+    color: #e40046 !important;
+    text-decoration: underline !important;
+}
+
+
+
+/* --- MAIN BANNER SLIDER --- */
+.carousel-item img {
+    height: 380px; /* Fixed height for consistency */
+    object-fit: cover; /* Ensures image covers area without stretching */
+    width: 100%;
+}
+
+/* Customizing the Prev/Next Buttons */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 50%, 50%;
+    width: 40px;
+    height: 40px;
+}
+
+/* Move indicators up slightly */
+.carousel-indicators {
+    bottom: 10px;
+}
+
+/* Active indicator color (Snapdeal Red or Gray) */
+.carousel-indicators button {
+    background-color: #ccc !important;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50%;
+    margin: 0 5px !important;
+}
+
+.carousel-indicators .active {
+    background-color: #e40046 !important;
+}
+
+
+/* --- TRUST STRIP --- */
+.trust-strip-container {
+    background-color: #1a1a1a; /* Dark Black Background */
+    padding: 20px 40px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+     border-radius: 10px;
+}
+
+.trust-box {
+    background-color: white;
+    border-radius: 50px; /* Fully rounded edges */
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+    transition: transform 0.2s;
+}
+
+.trust-box:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.trust-icon {
+    font-size: 30px;
+    color: #555;
+}
+
+.trust-text h5 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+    color: #333;
+}
+
+.trust-text p {
+    font-size: 13px;
+    margin: 0;
+    color: #666;
+}
+
+
+/* --- DEAL OF THE DAY --- */
+.deal-card {
+    transition: transform 0.2s;
+}
+
+.deal-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+/* Scroll Buttons */
+.deal-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 10;
+    cursor: pointer;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.deal-scroll-btn:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    color: #e40046;
+}
+
+.btn-left { left: -20px; }
+.btn-right { right: -20px; }
+
+/* Hide Scrollbar but keep functionality */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+
+/* --- MID STRIP ADS --- */
+.mid-strip-box img {
+    width: 100%;
+    height: auto;       /* Maintains the image aspect ratio */
+    object-fit: cover;  
+    max-height: 450px;  /* Prevents it from being too tall on huge screens */
+    transition: transform 0.3s ease;
+}
+
+.mid-strip-box:hover img {
+    transform: scale(1.01); /* Subtle zoom effect when you hover over the ad */
+}
+
+
+/* --- NEW ARRIVALS RIBBON --- */
+.new-in-badge {
+    background-color: #72bf44; /* Snapdeal Green */
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding: 4px 0;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    right: 10px;
+    border-radius: 4px 4px 0 0;
+    z-index: 5;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Ensure the image box sits correctly below the ribbon */
+.deal-img-box {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- FOOTER BANNER --- */
+.footer-banner-box img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* Optional: Limit height if the image is massive */
+    max-height: 500px; 
+}
+
+/* --- EXPLORE GRID --- */
+.explore-card {
+    transition: box-shadow 0.2s, transform 0.2s;
+    border-radius: 8px;
+}
+
+.explore-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+    transform: translateY(-3px);
+}
+
+/* --- FOOTER STYLES --- */
+.sd-footer {
+    font-family: sans-serif;
+    color: #333;
+}
+
+.footer-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 2;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #e40046; /* Snapdeal Red on Hover */
+    text-decoration: underline;
+}
+
+/* Payment Icons Styling */
+.payment-icon {
+    font-size: 24px;
+    color: #555;
+    background: #f4f4f4;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+
+/* Social Icons Styling */
+.social-icon {
+    color: #fff;
+    background-color: #333; /* Dark circles */
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.social-icon:hover {
+    background-color: #e40046;
+    color: white;
+}
+/* --- Z-INDEX LAYER FIX --- */
+
+/* 1. White Header: HIGHEST Priority */
+header.sticky-top {
+    position: relative;
+    z-index: 9999 !important; /* Higher than everything */
+    overflow: visible !important; /* Let the menu spill out */
+}
+
+/* 2. Red Category Bar: LOWER Priority */
+.bg-danger.shadow-sm {
+    position: relative;
+    z-index: 1 !important; /* Lower than header */
+}
+
+/* 3. Dropdown Menu: TOP Priority */
+.dropdown-menu-custom {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    z-index: 10000 !important; /* Highest possible number */
+    display: none;
+    background-color: #212121;
+    min-width: 230px;
+    border-top: 3px solid #e40046;
+    box-shadow: 0px 10px 40px rgba(0,0,0,0.5);
+}
+
+/* 4. Show on Hover */
+.dropdown-hover:hover .dropdown-menu-custom {
+    display: block !important;
+}
+
+
+
+
+/* 1. Force the Red Header Parent to be Higher than Categories */
+    .sd-header-main {
+        position: relative !important;
+        z-index: 5000 !important; /* Forces it above the category bar */
+    }
+    /* 2. Ensure Dropdown is visible */
+    .dropdown-hover:hover .dropdown-menu-custom {
+        display: block !important;
+    }
+
+    /* Hover effect for left menu items */
+.main-cat-item:hover {
+    background-color: #f8f9fa;
+    color: #e40046; /* Snapdeal brand color */
+}
+.main-cat-item:hover i {
+    color: #e40046 !important;
+}
+
+/* Hover effect for right panel links */
+.sub-link:hover {
+    color: #e40046 !important;
+    padding-left: 5px; /* Small animation effect */
+    transition: all 0.2s ease;
+}
+
+/* Ensure the mega menu sits on top of other content like the carousel */
+.category-menu-wrapper {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+/* Hover effect for left menu items */
+.main-cat-item:hover {
+    background-color: #f8f9fa;
+    color: #e40046; /* Snapdeal brand color */
+}
+.main-cat-item:hover i {
+    color: #e40046 !important;
+}
+
+/* Hover effect for right panel links */
+.sub-link:hover {
+    color: #e40046 !important;
+    padding-left: 5px; /* Small animation effect */
+    transition: all 0.2s ease;
+}
+
+/* Ensure the mega menu sits on top of other content like the carousel */
+.category-menu-wrapper {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

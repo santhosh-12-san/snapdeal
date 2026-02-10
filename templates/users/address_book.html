@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4>My Addresses</h4>
+                <a href="{% url 'users:add_address' %}" class="btn btn-danger">+ Add New Address</a>
+            </div>
+
+            {% if addresses %}
+                <div class="row">
+                    {% for addr in addresses %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <span class="badge bg-secondary mb-2">{{ addr.address_type }}</span>
+                                <h6 class="card-title fw-bold">{{ addr.name }}</h6>
+                                <p class="card-text small text-muted">
+                                    {{ addr.address_line }}<br>
+                                    {{ addr.locality }}, {{ addr.city }}<br>
+                                    {{ addr.state }} - <strong>{{ addr.pincode }}</strong>
+                                </p>
+                                <p class="small mb-0"><i class="fas fa-phone-alt"></i> {{ addr.mobile }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-light text-center border">
+                    <p class="mb-0 text-muted">No addresses found. Add one now!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

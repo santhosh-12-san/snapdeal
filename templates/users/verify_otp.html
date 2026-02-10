@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 85vh; background-color: #f7f7f7;">
+    
+    <div class="card border-0 shadow-lg d-flex flex-row overflow-hidden" style="width: 900px; height: 500px;">
+        
+        <div class="d-none d-md-block p-5 text-start" style="width: 40%; background: #e9e9e9 url('https://i3.sdlcdn.com/img/snapdeal/ico/login-bg.png') no-repeat bottom left; background-size: contain;">
+            <div class="mt-4">
+                <h6 class="fw-bold text-muted mb-3 text-uppercase" style="font-size: 12px;">Manage Your Orders</h6>
+                <h6 class="fw-bold text-muted mb-3 text-uppercase" style="font-size: 12px;">Shortlisting Made Easy</h6>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 d-flex flex-column justify-content-center" style="width: 60%;">
+            
+            <h4 class="text-center text-muted fw-normal mb-2">Verify Mobile Number</h4>
+            <p class="text-center small text-muted mb-4">
+                Please enter the verification code sent to <br>
+                <span class="fw-bold text-dark">+91 {{ mobile }}</span> 
+                <a href="{% url 'users:login_otp' %}" class="text-danger text-decoration-none ms-2" style="font-size: 11px;">(Change)</a>
+            </p>
+
+            <form method="POST" action="{% url 'users:verify_otp' %}">
+                {% csrf_token %}
+                
+                <div class="form-floating mb-4">
+                    <input type="text" name="otp" class="form-control rounded-0 border-0 border-bottom text-center fw-bold letter-spacing-2" 
+                           id="otpInput" placeholder="Enter OTP" required maxlength="4" style="box-shadow: none; font-size: 20px; letter-spacing: 5px;">
+                    <label for="otpInput" class="text-muted w-100 text-center">Enter 4 Digit OTP</label>
+                </div>
+
+                <button type="submit" class="btn btn-danger w-100 rounded-1 fw-bold text-uppercase py-3" style="background-color: #e40046; border: none; font-size: 14px;">
+                    VERIFY
+                </button>
+            </form>
+
+            <div class="text-center mt-4 small text-muted">
+                Didn't receive the code? <a href="{% url 'users:login_otp' %}" class="text-danger fw-bold text-decoration-none">Resend</a>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger mt-3 py-2 small text-center">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom-0">
+                    <h5 class="fw-bold mt-2">
+                        {% if address %}Edit Address{% else %}Add New Address{% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label small text-muted">Full Name</label>
+                                <input type="text" name="name" class="form-control" value="{{ address.name|default:'' }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">Mobile Number</label>
+                                <input type="text" name="mobile" class="form-control" value="{{ address.mobile|default:'' }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">Pincode</label>
+                                <input type="text" name="pincode" class="form-control" value="{{ address.pincode|default:'' }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small text-muted">Address (House No, Building, Street)</label>
+                                <textarea name="address_line" class="form-control" rows="2" required>{{ address.address_line|default:'' }}</textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small text-muted">Locality / Town</label>
+                                <input type="text" name="locality" class="form-control" value="{{ address.locality|default:'' }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">City</label>
+                                <input type="text" name="city" class="form-control" value="{{ address.city|default:'' }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">State</label>
+                                <input type="text" name="state" class="form-control" value="{{ address.state|default:'' }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small text-muted">Type</label>
+                                <select name="address_type" class="form-select">
+                                    <option value="Home" {% if address.address_type == 'Home' %}selected{% endif %}>Home</option>
+                                    <option value="Work" {% if address.address_type == 'Work' %}selected{% endif %}>Work</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger w-100 mt-4 py-2 fw-bold" style="background-color: #e40046;">
+                            {% if address %}UPDATE ADDRESS{% else %}SAVE ADDRESS{% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

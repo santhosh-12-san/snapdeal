@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ... (Your existing styles stay exactly the same) ... */
+    .sd-header-main { background-color: #e40046 !important; padding: 15px 0; }
+    .sd-top-bar { background-color: #c7003d !important; }
+    .sd-logo-text, .sc-49edc83e-5, .far, .fas, #headerCartLink { color: white !important; }
+    .sc-49edc83e-7 { background: white !important; }
+    .sc-49edc83e-8 { background: #333 !important; }
+    .sc-49edc83e-8 .fas { color: white !important; }
+    .search-box-input { background: white !important; }
+    .sd-category-bar { display: none !important; }
+    body { background-color: #f7f7f7; }
+    .pdp-container { background: white; max-width: 1300px; margin: 20px auto; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); display: flex; gap: 30px; border-radius: 2px; }
+    .pdp-left { width: 40%; display: flex; gap: 10px; }
+    .thumb-strip { display: flex; flex-direction: column; gap: 10px; width: 60px; }
+    .thumb-box { width: 60px; height: 60px; border: 1px solid #eee; cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .thumb-box:hover, .thumb-box.active { border: 1px solid #333; }
+    .thumb-box img { max-width: 100%; max-height: 100%; }
+    .main-img-box { flex-grow: 1; height: 450px; border: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .main-img-box img { max-width: 100%; max-height: 100%; transition: transform 0.3s; }
+    .main-img-box:hover img { transform: scale(1.5); cursor: crosshair; }
+    .pdp-right { flex-grow: 1; width: 60%; }
+    .pdp-title { font-size: 22px; color: #333; font-weight: 400; margin-bottom: 5px; }
+    .pdp-rating { display: flex; align-items: center; font-size: 12px; margin-bottom: 15px; }
+    .stars { color: #ffb400; margin-right: 10px; }
+    .review-link { color: #007185; text-decoration: none; }
+    .price-section { border-top: 1px dotted #ddd; border-bottom: 1px dotted #ddd; padding: 15px 0; margin-bottom: 20px; }
+    .mrp-text { font-size: 12px; color: #666; }
+    .price-final { font-size: 24px; color: #e40046; font-weight: bold; }
+    .price-off { font-size: 13px; color: #666; border: 1px solid #ddd; padding: 2px 5px; margin-left: 10px; }
+    .option-row { margin-bottom: 15px; }
+    .opt-label { font-size: 13px; color: #666; width: 60px; display: inline-block; }
+    .color-opt { width: 30px; height: 30px; border: 1px solid #ddd; display: inline-block; margin-right: 5px; cursor: pointer; vertical-align: middle; }
+    .color-opt:hover { border-color: #999; }
+    .color-opt.selected { border: 2px solid #333; }
+    .size-opt { width: 35px; height: 35px; border: 1px solid #ddd; display: inline-block; text-align: center; line-height: 35px; font-size: 12px; margin-right: 5px; cursor: pointer; color: #333; }
+    .size-opt:hover { border-color: #333; }
+    .size-opt.selected { border: 2px solid #333; font-weight: bold; }
+    .size-chart-link { font-size: 11px; color: #007185; text-decoration: none; margin-left: 10px; }
+    .btn-row { display: flex; gap: 10px; margin-top: 25px; margin-bottom: 25px; }
+    .btn-cart { background: #333; color: white; border: none; padding: 12px 30px; font-size: 14px; font-weight: bold; border-radius: 2px; width: 48%; cursor: pointer; }
+    .btn-buy { background: #e40046; color: white; border: none; padding: 12px 30px; font-size: 14px; font-weight: bold; border-radius: 2px; width: 48%; cursor: pointer; }
+    .btn-cart:hover { background: #000; }
+    .btn-buy:hover { background: #c7003d; }
+    .delivery-box { background: #f9f9f9; padding: 10px; border: 1px solid #eee; display: flex; align-items: center; gap: 10px; border-radius: 2px; }
+    .pincode-input { border: 1px solid #ccc; padding: 6px; font-size: 12px; width: 150px; }
+    .btn-check { font-size: 11px; font-weight: bold; color: #333; background: #ddd; border: none; padding: 7px 15px; cursor: pointer; }
+    .policy-info { font-size: 11px; color: #666; margin-top: 10px; display: flex; gap: 20px; }
+    .policy-info span i { margin-right: 5px; color: #555; }
+    .details-tabs { max-width: 1300px; margin: 20px auto; display: flex; gap: 20px; }
+    .details-left { width: 75%; background: white; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .details-right { width: 25%; }
+    .tab-header { font-size: 14px; font-weight: bold; color: #e40046; border-bottom: 2px solid #e40046; display: inline-block; padding-bottom: 8px; margin-bottom: 20px; }
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .spec-table td { padding: 8px 0; color: #333; border-bottom: 1px solid #f5f5f5; }
+    .spec-label { color: #888; width: 200px; }
+    .seller-box { background: white; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .seller-name { font-size: 13px; font-weight: bold; color: #007185; }
+    .seller-rating { font-size: 11px; color: #ffb400; margin-top: 5px; }
+</style>
+
+<div class="bg-white border-bottom py-2" style="font-size: 11px; color: #999;">
+    <div class="sd-container">
+        Home / {{ product.category.name }} / {{ product.name }}
+    </div>
+</div>
+
+<div class="pdp-container">
+    
+    <div class="pdp-left">
+        <div class="thumb-strip">
+            {% for img in images %}
+            <div class="thumb-box" onmouseover="changeImage('{{ img.image.url }}')">
+                <img src="{{ img.image.url }}" alt="thumb">
+            </div>
+            {% empty %}
+                <div class="thumb-box"><img src="{{ product.image.url }}"></div>
+            {% endfor %}
+        </div>
+        <div class="main-img-box">
+            <img id="mainZoomImg" src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+    </div>
+
+    <div class="pdp-right">
+        <h1 class="pdp-title">{{ product.name }}</h1>
+        
+        <div class="pdp-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="text-muted">(12 Ratings)</span>
+            <span class="mx-2">|</span>
+            <a href="#" class="review-link">1 Review</a>
+            <span class="mx-2">|</span>
+            <a href="#" class="review-link">Have a question?</a>
+        </div>
+
+        <div class="price-section">
+            <div class="mb-1">
+                <span class="mrp-text">MRP <span style="text-decoration: line-through;">Rs. {{ product.original_price }}</span> (Inclusive of all taxes)</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="price-final">Rs. {{ product.selling_price }}</span>
+                <span class="price-off">{{ product.discount_percentage }}% OFF</span>
+            </div>
+        </div>
+
+        <form id="productForm" method="POST" action="{% url 'orders:add_to_cart' product.id %}">
+            {% csrf_token %}
+            
+            <input type="hidden" name="size" id="selectedSize" value="4"> <input type="hidden" name="color" id="selectedColor" value="Cream"> <input type="hidden" name="action" id="formAction" value="add">
+
+            <div class="option-row">
+                <span class="opt-label">Color</span>
+                <div class="d-inline-block">
+                    {% for color in colors %}
+                        <div class="color-opt" onclick="selectColor(this, '{{ color.name }}')" style="background-color: {{ color.code }};" title="{{ color.name }}"></div>
+                    {% empty %}
+                        <div class="color-opt selected" onclick="selectColor(this, 'Cream')" style="background:#f5f5dc;" title="Cream"></div> 
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="option-row">
+                <span class="opt-label">Size</span>
+                <div class="d-inline-block">
+                    {% for size in sizes %}
+                        <span class="size-opt" onclick="selectSize(this, '{{ size.name }}')">{{ size.name }}</span>
+                    {% empty %}
+                        <span class="size-opt" onclick="selectSize(this, '3')">3</span>
+                        <span class="size-opt selected" onclick="selectSize(this, '4')">4</span>
+                        <span class="size-opt" onclick="selectSize(this, '5')">5</span>
+                        <span class="size-opt" onclick="selectSize(this, '6')">6</span>
+                    {% endfor %}
+                    <a href="#" class="size-chart-link">Size Chart</a>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button type="submit" class="btn btn-dark">ADD TO CART</button>
+
+    <a href="{% url 'orders:view_cart' %}" class="btn btn-danger" style="background-color: #e40046;">
+        GO TO CART
+    </a>
+            </div>
+        </form>
+
+        <div class="mb-3">
+            <span class="small text-muted mb-1 d-block">Delivery</span>
+            <div class="delivery-box">
+                <input type="text" class="pincode-input" placeholder="Enter pincode">
+                <button type="button" class="btn-check">CHECK</button>
+                <span class="small text-muted">Generally delivered in 5 - 9 days</span>
+            </div>
+        </div>
+
+        <div class="policy-info">
+            <span><i class="fas fa-undo"></i> 7 Days Easy Returns</span>
+            <span><i class="fas fa-shield-alt"></i> TrustPay</span>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade checkout-modal" id="checkoutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="checkout-header d-flex justify-content-between align-items-center">
+                <h5 class="m-0 fw-bold">snapdeal</h5>
+                <div>
+                    <span class="small me-3">English <i class="fas fa-chevron-down"></i></span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body p-0 d-flex" style="min-height: 400px;">
+                <div class="p-4 w-60 border-end">
+                    <div class="d-flex gap-4 mb-4 border-bottom pb-2">
+                        <span class="fw-bold text-danger border-bottom border-danger border-3">Summary</span>
+                        <span class="text-muted">Address</span>
+                        <span class="text-muted">Payments</span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="small fw-bold mb-2"><i class="far fa-user me-2"></i> Contact Details</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">+91</span>
+                            <input type="text" class="form-control" placeholder="Phone Number">
+                        </div>
+                        <div class="mt-2">
+                            <input type="checkbox" id="notify" checked>
+                            <label for="notify" class="small text-muted">Notify me with offers and updates</label>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-5">
+                        <button class="btn btn-danger w-100 py-2 fw-bold" style="background-color: #e40046;">Continue</button>
+                        <div class="text-center mt-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" width="100" alt="Razorpay">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 w-40 bg-light">
+                    <h6 class="fw-bold mb-4">Order Summary</h6>
+                    <div class="d-flex gap-3 mb-3">
+                        <img src="{{ product.image.url }}" width="60" height="60" style="object-fit: cover; border-radius: 4px;">
+                        <div>
+                            <p class="small mb-0 text-truncate" style="max-width: 150px;">{{ product.name }}</p>
+                            <p class="small text-muted">Qty: 1</p>
+                        </div>
+                        <span class="fw-bold ms-auto">₹{{ product.selling_price }}</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Price</span>
+                        <span class="fw-bold">₹{{ product.selling_price }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

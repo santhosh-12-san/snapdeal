@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 text-center p-5">
+                <div class="mb-4">
+                    <i class="fas fa-shield-alt fa-3x text-success"></i>
+                </div>
+                <h3 class="fw-bold mb-3">Make Payment</h3>
+                <p class="text-muted mb-4">Complete your purchase safely using Razorpay.</p>
+                
+                <div class="bg-light p-3 rounded mb-4">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Total Amount</span>
+                        <span class="fw-bold text-danger">Rs. {{ total_price }}</span>
+                    </div>
+                </div>
+
+                <button id="rzp-button-payment" class="btn btn-danger w-100 py-3 fw-bold" style="background-color: #e40046;">
+                    PAY NOW
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{ razorpay_key }}", 
+    "amount": "{{ razorpay_amount }}", 
+    "currency": "INR",
+    "name": "Snapdeal Clone",
+    "description": "Order Payment",
+    "image": "https://i.imgur.com/3g7nmJC.png",
+    "handler": function (response){
+        window.location.href = "/orders/payment/success/";
+    },
+    "prefill": {
+        "name": "{{ request.user.first_name }}",
+        "email": "{{ request.user.email }}",
+        "contact": "9999999999"
+    },
+    "theme": { "color": "#e40046" }
+};
+
+var rzp1 = new Razorpay(options);
+
+document.getElementById('rzp-button-payment').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+{% endblock %}

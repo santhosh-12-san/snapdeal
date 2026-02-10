@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-1">Order Status</h4>
+                    <p class="text-muted">Order ID: <span class="text-dark fw-bold">#{{ order.order_id }}</span></p>
+                    
+                    <div class="position-relative m-4">
+                        <div class="progress" style="height: 3px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between position-absolute top-0 w-100" style="margin-top: -12px;">
+                            
+                            <div class="text-center">
+                                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-check small"></i>
+                                </div>
+                                <div class="small mt-2 fw-bold text-success">Order Placed</div>
+                            </div>
+
+                            <div class="text-center">
+                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-box small"></i>
+                                </div>
+                                <div class="small mt-2 text-muted">Packed</div>
+                            </div>
+
+                            <div class="text-center">
+                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-truck small"></i>
+                                </div>
+                                <div class="small mt-2 text-muted">Shipped</div>
+                            </div>
+
+                            <div class="text-center">
+                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-home small"></i>
+                                </div>
+                                <div class="small mt-2 text-muted">Delivered</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white p-3 border-bottom">
+                    <h6 class="mb-0 fw-bold">Items in this Order</h6>
+                </div>
+                <div class="card-body p-0">
+                    {% for item in order_items %}
+                    <div class="d-flex p-3 border-bottom align-items-center">
+                        {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" style="width: 60px; height: 60px; object-fit: contain;">
+                        {% endif %}
+                        <div class="ms-3">
+                            <h6 class="mb-1 text-dark fw-bold">{{ item.product.title }}</h6>
+                            <p class="mb-0 small text-muted">Qty: {{ item.quantity }} | Rs. {{ item.price }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer bg-white p-3 text-end">
+                    <h5 class="fw-bold mb-0">Total Paid: <span class="text-danger">Rs. {{ order.total_amount }}</span></h5>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-outline-dark px-4">Continue Shopping</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    command: gunicorn snapdeal_clone.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: snapdeal_db
+      POSTGRES_USER: snapdeal_user
+      POSTGRES_PASSWORD: snapdeal_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  media_volume:

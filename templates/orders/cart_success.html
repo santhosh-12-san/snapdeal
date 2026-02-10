@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="background-color: #f7f7f7; min-height: 80vh; padding-bottom: 50px;">
+    
+    <div class="container-fluid p-0 mb-4">
+        <div class="d-flex align-items-center px-4 py-3" style="background-color: #1abc9c; color: white;">
+            <i class="fas fa-check-circle fa-lg me-3"></i>
+            <h5 class="mb-0 fw-normal">{{ item.product.name }} added to your cart</h5>
+            <a href="/" class="ms-auto text-white"><i class="fas fa-times"></i></a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card border-0 shadow-sm p-4 mb-5">
+            <div class="row align-items-center">
+                
+                <div class="col-md-6 border-end">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ item.product.image.url }}" alt="Product" style="width: 100px; height: 100px; object-fit: contain;">
+                        <div class="ms-3">
+                            <h6 class="text-muted mb-1">{{ item.product.name }}</h6>
+                            <h5 class="fw-bold">Rs. {{ item.product.selling_price }}</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 ps-md-5">
+                    <p class="text-muted mb-1">Your Order ({{ cart.items.count }} Items)</p>
+                    <h4 class="fw-bold mb-3" style="color: #333;">You Pay: Rs. {{ cart.get_total_price }}</h4>
+                    <p class="text-muted small mb-4">(Including delivery and other charges)</p>
+                    
+                    <div class="d-flex gap-3">
+                        <div class="d-grid gap-2">
+    <a href="{% url 'orders:checkout' %}" class="btn btn-danger w-100 py-3 fw-bold">
+    PROCEED TO CHECKOUT
+</a>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    // --- DEBUGGING: Check if key loads ---
+    console.log("Razorpay Script Loaded");
+
+    var options = {
+        // ------------------------------------------------------------------
+        // PASTE YOUR KEY ID HERE DIRECTLY (Remove the dots and paste)
+        // ------------------------------------------------------------------
+        "key": "rzp_test_S6vcSahmsz2Zjt", 
+        // ------------------------------------------------------------------
+        
+        "amount": "{{ razorpay_amount }}", 
+        "currency": "INR",
+        "name": "Snapdeal Clone",
+        "description": "Cart Payment",
+        "image": "https://i.imgur.com/3g7nmJC.png",
+        "handler": function (response){
+            window.location.href = "/orders/payment/success/";
+        },
+        "prefill": {
+            "name": "Test User",
+            "email": "test@example.com",
+            "contact": "9999999999"
+        },
+        "theme": {
+            "color": "#e40046"
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+
+    document.getElementById('rzp-button-cart').onclick = function(e){
+        console.log("Button Clicked"); // Check Console if nothing happens
+        rzp1.open();
+        e.preventDefault();
+    }
+    </script>
+                        
+                        <a href="{% url 'orders:view_cart' %}" class="btn btn-dark px-4 py-2 fw-bold rounded-1">VIEW CART</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row text-center g-4">
+            <div class="col-md-3">
+                <div class="bg-white p-4 h-100 shadow-sm">
+                    <i class="fas fa-lock fa-2x text-muted mb-3"></i>
+                    <h6 class="fw-bold small">100% SECURE PAYMENTS</h6>
+                    <p class="text-muted small mb-0">Moving your card details to a much more secured place</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 h-100 shadow-sm">
+                    <i class="fas fa-shield-alt fa-2x text-muted mb-3"></i>
+                    <h6 class="fw-bold small">TRUSTPAY</h6>
+                    <p class="text-muted small mb-0">100% Payment Protection. Easy Return Policy</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 h-100 shadow-sm">
+                    <i class="fas fa-headset fa-2x text-muted mb-3"></i>
+                    <h6 class="fw-bold small">HELP CENTER</h6>
+                    <p class="text-muted small mb-0">Got a question? Look no further. Browse our FAQs.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 h-100 shadow-sm">
+                    <i class="fas fa-mobile-alt fa-2x text-muted mb-3"></i>
+                    <h6 class="fw-bold small">SHOP ON THE GO</h6>
+                    <p class="text-muted small mb-0">Download the app and get exciting app only offers.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

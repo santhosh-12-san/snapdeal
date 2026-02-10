@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 85vh; background-color: #f7f7f7;">
+    
+    <div class="bg-white position-relative shadow-sm border" style="width: 400px; border-radius: 4px; overflow: hidden;">
+        
+        <div class="px-5 py-5 text-center">
+            <h5 class="text-muted mb-2">Login on Snapdeal</h5>
+            <p class="small text-muted mb-4" style="font-size: 11px;">Please provide your details to Login/Sign Up</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} p-1 small mb-3 text-center" style="font-size: 11px;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" action="{% url 'users:login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="login_type" id="loginType" value="password">
+
+                <input type="text" name="mobile_or_username" class="form-control rounded-0 mb-3" placeholder="Mobile Number or Email" style="font-size: 13px; padding: 10px;" required>
+
+                <input type="password" name="password" class="form-control rounded-0 mb-3" placeholder="Password" style="font-size: 13px; padding: 10px;">
+
+                <button type="submit" class="btn btn-danger w-100 rounded-1 fw-bold text-uppercase py-2" style="background-color: #e40046; border: none; font-size: 13px;">
+                    Login
+                </button>
+            </form>
+
+            <div class="text-center mt-3 text-muted" style="font-size: 11px;">
+                or Login Using
+            </div>
+
+            <button class="btn btn-sm btn-outline-secondary w-100 mt-2">Google</button>
+            
+            <div class="text-center mt-4 small">
+                New User? <a href="{% url 'users:register' %}" class="text-danger fw-bold text-decoration-none">Register</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* === ADDED STYLES FOR ZOOM EFFECT & HOVER === */
+    .deal-img-box img, .explore-card img { transition: transform 0.3s ease; }
+    .deal-card:hover .deal-img-box img { transform: scale(1.08); } /* Zoom In */
+    .deal-card:hover .deal-img-box { box-shadow: 0 8px 20px rgba(0,0,0,0.2) !important; border-color: #ccc !important; }
+    
+    .explore-card { transition: box-shadow 0.3s ease; overflow: hidden; }
+    .explore-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important; }
+    .explore-card:hover img { transform: scale(1.08); }
+
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .deal-scroll-btn {
+        position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+        width: 40px; height: 80px; background: rgba(255,255,255,0.9);
+        border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
+    }
+    .deal-scroll-btn:hover { background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    .btn-left { left: 0; border-radius: 0 4px 4px 0; }
+    .btn-right { right: 0; border-radius: 4px 0 0 4px; }
+</style>
+
+<div class="sd-container mt-3">
+    {% if sliders %}
+    <div id="mainBannerSlider" class="carousel slide shadow-sm border" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {% for banner in sliders %}
+            <button type="button" data-bs-target="#mainBannerSlider" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner bg-white">
+            {% for banner in sliders %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                {% if banner.link %}<a href="{{ banner.link }}"><img src="{{ banner.image.url }}" class="d-block w-100"></a>
+                {% else %}<img src="{{ banner.image.url }}" class="d-block w-100">{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainBannerSlider" data-bs-slide="prev"><span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span></button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainBannerSlider" data-bs-slide="next"><span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span></button>
+    </div>
+    {% endif %}
+</div>
+
+<div class="sd-container mt-4">
+    <div class="trust-strip-container">
+        <div class="row g-3">
+            <div class="col-md-4"><div class="trust-box"><div class="trust-icon"><i class="fas fa-truck"></i></div><div class="trust-text"><h5>FREE Delivery</h5><p>On all Orders</p></div></div></div>
+            <div class="col-md-4"><div class="trust-box"><div class="trust-icon"><i class="fas fa-sync-alt"></i></div><div class="trust-text"><h5>7 Days</h5><p>Easy Returns</p></div></div></div>
+            <div class="col-md-4"><div class="trust-box"><div class="trust-icon"><i class="fas fa-shield-alt"></i></div><div class="trust-text"><h5>Great Quality at</h5><p>Best Prices</p></div></div></div>
+        </div>
+    </div>
+</div>
+
+<div class="sd-container mt-5 mb-5">
+    <h2 class="text-center fw-bold mb-4" style="color: #333; font-size: 28px;">Deal Of The Day</h2>
+    <div class="position-relative">
+        <button class="deal-scroll-btn btn-left" onclick="scrollDeals('left')"><i class="fas fa-chevron-left"></i></button>
+        <div id="dealScrollBox" class="d-flex overflow-auto pb-4 hide-scrollbar" style="scroll-behavior: smooth; gap: 20px;">
+            {% for product in deals %}
+            <a href="/category/{{ product.category.id }}/" class="text-decoration-none text-dark">
+                <div class="deal-card flex-shrink-0 position-relative" style="width: 200px; cursor: pointer;">
+                    <div class="deal-img-box rounded-3 overflow-hidden border shadow-sm" style="height: 250px;">
+                        <img src="{{ product.image.url }}" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="deal-text-overlay text-center w-100 position-absolute bottom-0 p-2" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+                        <div class="text-white small fw-bold mb-0">{{ product.name }}</div>
+                        <div class="deal-price-tag text-warning fw-bold" style="font-size: 18px;">₹{{ product.selling_price }}</div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <button class="deal-scroll-btn btn-right" onclick="scrollDeals('right')"><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<div class="sd-container mt-5">
+    <div class="row">
+        {% for banner in mid_banners %}
+        <div class="col-12 mb-4"><div class="mid-strip-box rounded-3 overflow-hidden shadow-sm border position-relative">
+            {% if banner.link %}<a href="{{ banner.link }}" class="d-block"><img src="{{ banner.image.url }}" class="w-100 d-block"></a>
+            {% else %}<img src="{{ banner.image.url }}" class="w-100 d-block">{% endif %}
+        </div></div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="sd-container mt-5 mb-5">
+    <h2 class="text-center fw-bold mb-4" style="color: #333; font-size: 28px;">New Arrivals</h2>
+    <div class="position-relative">
+        <button class="deal-scroll-btn btn-left" onclick="scrollContainer('newArrivalsBox', 'left')"><i class="fas fa-chevron-left"></i></button>
+        <div id="newArrivalsBox" class="d-flex overflow-auto pb-4 hide-scrollbar" style="scroll-behavior: smooth; gap: 20px;">
+            {% for product in new_arrivals %}
+            <a href="/category/{{ product.category.id }}/" class="text-decoration-none text-dark">
+                <div class="deal-card flex-shrink-0 position-relative" style="width: 200px; cursor: pointer;">
+                    <div class="new-in-badge">New-In New-In New-In</div>
+                    <div class="deal-img-box rounded-3 overflow-hidden border shadow-sm mt-3" style="height: 250px;">
+                        <img src="{{ product.image.url }}" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="deal-text-overlay text-center w-100 position-absolute bottom-0 p-2" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+                        <div class="text-white small fw-bold mb-0">{{ product.name }}</div>
+                        <div class="text-white fw-bold">Under ₹{{ product.selling_price }}</div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <button class="deal-scroll-btn btn-right" onclick="scrollContainer('newArrivalsBox', 'right')"><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<div class="sd-container mt-5 mb-5">
+    <div class="row">
+        {% for banner in footer_banners %}
+        <div class="col-12 mb-4"><div class="footer-banner-box rounded-3 overflow-hidden shadow-sm border">
+            {% if banner.link %}<a href="{{ banner.link }}"><img src="{{ banner.image.url }}" class="w-100 d-block"></a>
+            {% else %}<img src="{{ banner.image.url }}" class="w-100 d-block">{% endif %}
+        </div></div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="sd-container mt-5 mb-5">
+    <h2 class="text-center fw-bold mb-4" style="color: #333; font-size: 28px;">Explore More On Snapdeal</h2>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3">
+        {% for product in explore_products %}
+        <div class="col">
+            <a href="/category/{{ product.category.id }}/" class="text-decoration-none text-dark">
+                <div class="card h-100 border shadow-sm explore-card">
+                    <div class="position-relative overflow-hidden" style="height: 220px;">
+                        <img src="{{ product.image.url }}" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="card-body p-2">
+                        <p class="card-text text-muted mb-1 small text-truncate">{{ product.name }}</p>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fw-bold text-dark">₹{{ product.selling_price }}</span>
+                            {% if product.original_price > product.selling_price %}
+                            <span class="text-decoration-line-through text-muted small">₹{{ product.original_price }}</span>
+                            <span class="text-secondary small border p-1 rounded-1" style="font-size: 10px;">{{ product.discount_percentage }}% off</span>
+                            {% endif %}
+                        </div>
+                        <div class="mt-1"><i class="fas fa-star text-warning small"></i><span class="text-muted small ms-1">(120)</span></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-4"><button class="btn btn-outline-secondary px-5 py-2 fw-bold" style="border-radius: 4px;">Load More</button></div>
+</div>
+
+<div class="seo-footer-content pb-4">
+    <div class="sd-container">
+        <div class="seo-links mb-4">
+            <p class="mb-2"><strong class="text-dark">Men:</strong> <a href="#">Shirts</a> | <a href="#">T-Shirts</a></p>
+            <p class="mb-2"><strong class="text-dark">Women:</strong> <a href="#">Sarees</a> | <a href="#">Kurtis</a></p>
+        </div>
+        <div class="about-text mb-4">
+            <p class="small text-muted text-justify">Snapdeal is India's leading pure-play value Ecommerce platform...</p>
+        </div>
+        <hr class="my-3 text-muted">
+        <div class="d-flex justify-content-between align-items-center pt-2">
+            <div class="copyright-text text-muted small">Copyright © 2026, Snapdeal Limited.</div>
+            <div class="made-for-bharat text-muted small">Made for Bharat <i class="fas fa-heart text-danger mx-1"></i></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function scrollDeals(direction) {
+        const container = document.getElementById('dealScrollBox');
+        container.scrollLeft += (direction === 'left' ? -300 : 300);
+    }
+    function scrollContainer(id, direction) {
+        const container = document.getElementById(id);
+        container.scrollLeft += (direction === 'left' ? -300 : 300);
+    }
+</script>
+{% endblock %}
