@@ -7,6 +7,8 @@ services:
       - media_volume:/app/media
     ports:
       - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=snapdeal_clone.settings
     depends_on:
       - db
 
